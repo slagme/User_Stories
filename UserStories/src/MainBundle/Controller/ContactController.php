@@ -16,11 +16,11 @@ class ContactController extends Controller
     /**
      * @Route("/new")
      * @Method("GET")
-     * @Template("MainBundle:Contact:new.html.twig")
+     * @Template(":Contact:new.html.twig")
      */
-    public function newFormulaAction()
+    public function newAction()
     {
-        $contact = new Contact ();
+        $contact = new Contact();
 
         $form = $this->createForm(ContactType::class, $contact,
             ['action' => $this->generateUrl('main_contact_new')]);
@@ -31,9 +31,9 @@ class ContactController extends Controller
     /**
      * @Route("/new")
      * @Method("POST")
-     * @Template("MainBundle:Contact:new.html.twig")
+     * @Template(":Contact:new.html.twig")
      */
-    public function newAction(Request $request)
+    public function createAction(Request $request)
     {
         $contact = new Contact();
 
@@ -46,8 +46,8 @@ class ContactController extends Controller
 
             $em->persist($contact);
             $em->flush();
-
-            return $this->redirectToRoute('main_contact_new', ['id' => $contact->getId()]);
+            //to szoł tutaj jest routem do pokazania wszystkich, którego ty nie masz
+            return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
         }
 
         return ['form' => $form->createView()];
@@ -56,16 +56,38 @@ class ContactController extends Controller
     /**
      * @Route("/{id}/modify")
      * @Method("GET")
+     * @Template(":Contact:new.html.twig")
      */
-    public function modifyFormulaAction()
+    public function modifyAction( Request $request, $id)
     {
-        return $this->render('MainBundle:Default:index.html.twig');
+        $contact = $this
+            ->getDoctrine()
+            ->getRepository('MainBundle:Contact')
+            ->find($id);
+
+        if (!$contact){
+            throw $this->createNotFoundException('Contact not found');
+        }
+
+        $form = $this->createForm(ContactType::class, $contact);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->flush();
+
+            return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
+        }
+
+        return ['form' => $form->createView()];
     }
 
     /**
      * @Route("/{id}/modify")
      * @Method("POST")
-     * @Template("MainBundle:Contact:new.html.twig")
+     * @Template("Contact:new.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
@@ -92,32 +114,57 @@ class ContactController extends Controller
 
         return ['form' => $form->createView()];
     }
-    /**
-     * @Route("/{id}/delete")
-     * @Method("GET")
-     */
-    public function deleteFormAction()
+        /**
+        * @Route("/{id}/delete")
+        * @Method("GET")
+        */
+    public function deleteAction($id)
     {
-        return $this->render('MainBundle:Default:index.html.twig');
+        $contact = $this->getDoctrine()->getRepository('MainBundle:Contact')->find($id);
+
+        if (!$contact) {
+            throw $this->createNotFoundException('Contact not found');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($contact);
+
+        $em->flush();
+
+        return $this->redirectToRoute('main_contact_showall');
     }
+
 
     /**
      * @Route("/{id}")
      * @Method("GET")
+     * @Template(":Contact:show.html.twig")
      */
-    public function showContactAction()
+    public function showAction($id)
     {
-        return $this->render('MainBundle:Default:index.html.twig');
+        $contact = $this->getDoctrine()
+            ->getRepository('MainBundle:Contact')
+            ->find($id);
+
+        if(!$contact){
+            throw $this->createNotFoundException('Contact not found');
+        }
+
+        return ['contact' => $contact];
     }
 
     /**
      * @Route("/")
+     * @Template(":Contact:show_all.html.twig")
      * @Method("GET")
      */
     public function showAllAction()
     {
-        return $this->render('MainBundle:Default:index.html.twig');
+        $contacts=$this->getDoctrine()->getRepository('MainBundle:Contact')->findAll();
+
+
+        return ['contacts' => $contacts];
+
+
     }
-
-
 }

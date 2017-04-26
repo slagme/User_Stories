@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+
+{%  block body %}
+    {% for contact in contacts %}
+        <p>
+            <a href="{{ path ('main_contact_show' , {'id' : contact.id})}}">{{ contact.name}} {{ contact.description }}</a>
+        </p>
+    {% endfor %}
+{% endblock %}
