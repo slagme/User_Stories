@@ -2,6 +2,7 @@
 
 namespace MainBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,19 @@ class Contact
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Address", mappedBy="contact")
+     *
+     *
+     */
+    private $addresses;
+
+    public function __construct()
+    {
+        $this->$addresses = new ArrayCollection();
+    }
 
 
     /**

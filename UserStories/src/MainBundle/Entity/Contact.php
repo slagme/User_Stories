@@ -2,6 +2,7 @@
 
 namespace MainBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,19 @@ class Contact
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Address", mappedBy="contact")
+     *
+     *
+     */
+    private $addresses;
+
+    public function __construct()
+    {
+        $this->addresses = new ArrayCollection();
+    }
 
 
     /**
@@ -90,5 +104,38 @@ class Contact
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Add addresses
+     *
+     * @param \MainBundle\Entity\Address $addresses
+     * @return Contact
+     */
+    public function addAddress(\MainBundle\Entity\Address $addresses)
+    {
+        $this->addresses[] = $addresses;
+
+        return $this;
+    }
+
+    /**
+     * Remove addresses
+     *
+     * @param \MainBundle\Entity\Address $addresses
+     */
+    public function removeAddress(\MainBundle\Entity\Address $addresses)
+    {
+        $this->addresses->removeElement($addresses);
+    }
+
+    /**
+     * Get addresses
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
     }
 }
