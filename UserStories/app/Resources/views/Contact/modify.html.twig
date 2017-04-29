@@ -1,0 +1,20 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} {{ contact.name }}{% endblock %}
+
+{% block body %}
+
+<p> Modify Contact:</p>
+{{ form_start (form) }}
+{{ form_widget (form) }}
+<button type="submit"> Modify Contact</button>
+{{ form_end (form) }}
+
+
+<p> Add Address:</p>
+{{ form_start (formAddress) }}
+{{ form_widget (formAddress) }}
+<button type="submit"> AddAddress</button>
+{{ form_end (formAddress) }}
+
+{% endblock %}

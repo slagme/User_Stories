@@ -1,9 +1,21 @@
 {% extends '::base.html.twig' %}
 
+
+{% block title %} Contacts {% endblock %}
 {%  block body %}
+    <form method="GET" action="{{ path('main_contact_showall') }}" ></form>
+
     {% for contact in contacts %}
+        <div>
+            <form action="{{ path ('main_contact_delete', {'id':contact.id })}}" method="POST">
+                <button > Delete </button> </form>
+            <form action="{{ path ('main_contact_modify', {'id':contact.id })}}" method="POST">
+                <button > Modify</button> </form>
+
+        </div>
+
         <p>
-            <a href="{{ path ('main_contact_show' , {'id' : contact.id})}}">{{ contact.name}} {{ contact.description }}</a>
+            <a href="{{ path ('main_contact_show' , {'id' : contact.id})}}">{{ contact.name}} </a>
         </p>
     {% endfor %}
 {% endblock %}
