@@ -32,32 +32,24 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=1000)
      */
     private $description;
 
-
     /**
      * @ORM\OneToMany(targetEntity="MainBundle\Entity\Address", mappedBy="contact")
-     *
-     *
      */
     private $addresses;
+    /**
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Phone", mappedBy="phone")
+     */
+    private $phones;
+
 
     public function __construct()
     {
-        $this->$addresses = new ArrayCollection();
-    }
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
+        $this->addresses = new ArrayCollection();
+        $this->phones=new ArrayCollection();
     }
 
     /**
@@ -104,5 +96,80 @@ class Contact
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Add addresses
+     *
+     * @param Address $address
+     * @return Contact
+     * @internal param Address $addresses
+     */
+    public function addAddress(Address $address)
+    {
+        $this->addresses[] = $address;
+
+        return $this;
+    }
+    /**
+     * Remove addresses
+     *
+     * @param Address $addresses
+     */
+    public function removeAddress(Address $address)
+    {
+        $this->addresses->removeElement($address);
+    }
+    /**
+     * Get addresses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * Add addresses
+     *
+     * @param phone $phone
+     * @return Contact
+     * @internal param Phone $phones
+     */
+    public function addPhone(Address $phone)
+    {
+        $this->phones[] = $phone;
+
+        return $this;
+    }
+    /**
+     * Remove phnes
+     *
+     * @param Address $phones
+     */
+    public function removePhone(Address $phone)
+    {
+        $this->phones->removeElement($phone);
+    }
+    /**
+     * Get phones
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPhones()
+    {
+        return $this->phones;
     }
 }

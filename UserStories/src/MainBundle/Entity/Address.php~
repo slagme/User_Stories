@@ -38,24 +38,23 @@ class Address
     /**
      * @var string
      *
-     * @ORM\Column(name="house_number", type="string", length=8)
+     * @ORM\Column(name="houseNumber", type="string", length=10)
      */
     private $houseNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="house_unit_number", type="string", length=8, nullable=true)
+     * @ORM\Column(name="houseUnitNumber", type="string", length=10, nullable=true)
      */
     private $houseUnitNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Address", inversedBy="addresses")
+     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Contact", inversedBy="addresses")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
      */
 
     private $contact;
-
 
     /**
      * Get id
@@ -158,4 +157,27 @@ class Address
     {
         return $this->houseUnitNumber;
     }
+
+    /**
+     * Set contact
+     *
+     * @param \MainBundle\Entity\Contact $contact
+     * @return Address
+     */
+    public function setContact(\MainBundle\Entity\Contact $contact = null)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+    /**
+     * Get contact
+     *
+     * @return \MainBundle\Entity\Contact
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
 }
