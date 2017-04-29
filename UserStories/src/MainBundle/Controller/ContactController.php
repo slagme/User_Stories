@@ -2,12 +2,15 @@
 
 namespace MainBundle\Controller;
 
+use MainBundle\Entity\Address;
 use MainBundle\Entity\Contact;
+use MainBundle\Form\AddressType;
 use MainBundle\Form\ContactType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -30,7 +33,6 @@ class ContactController extends Controller
 
     /**
      * @Route("/new")
-     * @Method("POST")
      * @Template(":Contact:new.html.twig")
      */
     public function createAction(Request $request)
@@ -46,50 +48,19 @@ class ContactController extends Controller
 
             $em->persist($contact);
             $em->flush();
-            //to szoł tutaj jest routem do pokazania wszystkich, którego ty nie masz
+            
             return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
         }
 
         return ['form' => $form->createView()];
     }
 
-    /**
-     * @Route("/{id}/modify")
-     * @Method("GET")
-     * @Template(":Contact:new.html.twig")
-     */
-    public function modifyAction( Request $request, $id)
-    {
-        $contact = $this
-            ->getDoctrine()
-            ->getRepository('MainBundle:Contact')
-            ->find($id);
-
-        if (!$contact){
-            throw $this->createNotFoundException('Contact not found');
-        }
-
-        $form = $this->createForm(ContactType::class, $contact);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $em->flush();
-
-            return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
-        }
-
-        return ['form' => $form->createView()];
-    }
-
-    /**
-     * @Route("/{id}/modify")
+        /**
+     * @Route("/{id}/modify/")
      * @Method("POST")
-     * @Template("Contact:new.html.twig")
+     * @Template("Contact:modify.html.twig")
      */
-    public function updateAction(Request $request, $id)
+    public function modifyAction(Request $request, $id)
     {
         $contact = $this
             ->getDoctrine()
@@ -100,9 +71,15 @@ class ContactController extends Controller
             throw $this->createNotFoundException('Contact not found');
         }
 
+
+        $address=new Address();
+        $address->setContact($contact);
+
         $form = $this->createForm(ContactType::class, $contact);
 
-        $form->handleRequest($request);
+        $formAddress= $this->createForm(AddressType::class, $address,
+            ['action' => $this->generateUrl('main_address_addAddress', ['id'=> $contact->getId()]),
+                'method'=> 'POST']);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -112,21 +89,23 @@ class ContactController extends Controller
             return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
         }
 
-        return ['form' => $form->createView()];
+        return [
+            'form' => $form->createView(),
+            'formAddress' => $formAddress->createView()];
     }
         /**
         * @Route("/{id}/delete")
-        * @Method("GET")
+        * @Method("POST")
         */
     public function deleteAction($id)
     {
+        $em=$this->getDoctrine()->getManager();
         $contact = $this->getDoctrine()->getRepository('MainBundle:Contact')->find($id);
 
         if (!$contact) {
             throw $this->createNotFoundException('Contact not found');
         }
 
-        $em = $this->getDoctrine()->getManager();
         $em->remove($contact);
 
         $em->flush();
@@ -164,7 +143,5 @@ class ContactController extends Controller
 
 
         return ['contacts' => $contacts];
-
-
     }
 }
