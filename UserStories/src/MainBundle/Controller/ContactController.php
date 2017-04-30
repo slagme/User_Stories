@@ -4,13 +4,14 @@ namespace MainBundle\Controller;
 
 use MainBundle\Entity\Address;
 use MainBundle\Entity\Contact;
+use MainBundle\Entity\Email;
 use MainBundle\Form\AddressType;
 use MainBundle\Form\ContactType;
+use MainBundle\Form\EmailType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -56,18 +57,15 @@ class ContactController extends Controller
     }
 
         /**
-     * @Route("/{id}/modify/")
-     * @Method("POST")
-     * @Template("Contact:modify.html.twig")
-     */
+        * @Route("/{id}/modify/")
+        * @Template("Contact:modify.html.twig")
+        */
     public function modifyAction(Request $request, $id)
     {
-        $contact = $this
-            ->getDoctrine()
-            ->getRepository('MainBundle:Contact')
-            ->find($id);
+        $contact=$this->getDoctrine()->getRepository('MainBundle:Contact')
+            ->loadAllAboutContact($id);
 
-        if (!$contact){
+        if(!$contact){
             throw $this->createNotFoundException('Contact not found');
         }
 
@@ -75,23 +73,35 @@ class ContactController extends Controller
         $address=new Address();
         $address->setContact($contact);
 
-        $form = $this->createForm(ContactType::class, $contact);
+        $email= new Email();
+        $email->setContact($contact);
+
+        $formContact = $this->createForm(ContactType::class, $contact);
 
         $formAddress= $this->createForm(AddressType::class, $address,
             ['action' => $this->generateUrl('main_address_addAddress', ['id'=> $contact->getId()]),
                 'method'=> 'POST']);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $formEmail = $this->createForm(EmailType::class, $email,
+            ['action' => $this->generateUrl('main_email_addEmail', ['id'=>$contact->getId()]),
+                'method' => 'POST']);
+
+        $formContact->handleRequest($request);
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
+            $em->persist($contact);
             $em->flush();
 
             return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
         }
 
         return [
-            'form' => $form->createView(),
-            'formAddress' => $formAddress->createView()];
+            'formContact' => $formContact->createView(),
+            'formAddress' => $formAddress->createView(),
+            'formEmail' => $formEmail->createView(),
+            'contact' => $contact];
     }
         /**
         * @Route("/{id}/delete")

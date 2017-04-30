@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\BrowserKit\Request;
-use Symfony\Component\BrowserKit\Response;
 
 class AddressController extends Controller
 {
@@ -52,7 +51,6 @@ class AddressController extends Controller
     public function deleteAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $contact = $em->getRepository('MainBundle:Contact')->find($id);
 
         if (!$contact) {
