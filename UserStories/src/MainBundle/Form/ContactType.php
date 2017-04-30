@@ -17,8 +17,8 @@ class ContactType extends AbstractType
         $builder
             ->add('name')
             ->add('description', 'textarea')
-            ->add('address', EntityType::class, ['class'=> 'MainBundle:Address',
-                'choice_label' => 'id']);
+            ->add('address');
+
     }
 
     /**
