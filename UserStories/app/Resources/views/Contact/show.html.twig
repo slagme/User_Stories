@@ -13,9 +13,9 @@
         <input type="submit" value="Delete">
     </form>
     <div>
-        <p>Adresses: </p>
+        <p>Addresses: </p>
         {% for address in contact.addresses %}
-            <p> {{ address.city }}, {{ address.city }} {{ adress.houseNumber }} {{ adress.houseUnitNumber }}</p>
+            <p> {{ address.city }}, {{ address.city }} {{ address.houseNumber }} {{ address.houseUnitNumber }}</p>
         {% endfor %}
     </div>
 
