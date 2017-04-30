@@ -37,7 +37,7 @@ class Email
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Contact", inversedBy="phones")
+     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Contact", inversedBy="emails")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
      */
 
@@ -98,6 +98,14 @@ class Email
     {
         return $this->emailType;
     }
+
+
+    /**
+     * Set contact
+     * @param \MainBundle\Entity\Contact $contact
+     * @return Email
+     */
+
 
     public function setContact(\MainBundle\Entity\Contact $contact = null)
     {

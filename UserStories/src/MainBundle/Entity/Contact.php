@@ -60,6 +60,18 @@ class Contact
     }
 
     /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+
+    /**
      * Set name
      *
      * @param string $name
@@ -138,17 +150,6 @@ class Contact
     }
 
     /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-
-    /**
      * Add addresses
      *
      * @param phone $phone
@@ -187,23 +188,23 @@ class Contact
      * @return Contact
      * @internal param email $emails
      */
-    public function addEmail(Email $email)
+    public function addEmail(\MainBundle\Entity\Email $email)
     {
         $this->emails[] = $email;
 
         return $this;
     }
     /**
-     * Remove emails
+     * Remove email
      *
-     * @param Email $emails
+     * @param \MainBundle\Entity\Email $email
      */
-    public function removeEmail(Email $email)
+    public function removeEmail(\MainBundle\Entity\Email $email)
     {
         $this->emails->removeElement($email);
     }
     /**
-     * Get phones
+     * Get email
      *
      * @return \Doctrine\Common\Collections\Collection
      */
