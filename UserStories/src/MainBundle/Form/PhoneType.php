@@ -13,7 +13,8 @@ class PhoneType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('phoneNumber')->add('type')->add('contact');
+        $builder->add('phoneNumber')
+            ->add('type');
     }
     
     /**
