@@ -40,11 +40,11 @@ class ContactController extends Controller
     {
         $contact = new Contact();
 
-        $form = $this->createForm(ContactType::class, $contact);
+        $formAddress = $this->createForm(ContactType::class, $contact);
 
-        $form->handleRequest($request);
+        $formAddress->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formAddress->isSubmitted() && $formAddress->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($contact);
@@ -53,7 +53,7 @@ class ContactController extends Controller
             return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
         }
 
-        return ['form' => $form->createView()];
+        return ['formAddress' => $formAddress->createView()];
     }
 
         /**
