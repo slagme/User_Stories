@@ -15,7 +15,19 @@
     <div>
         <p>Addresses: </p>
         {% for address in contact.addresses %}
-            <p> {{ address.city }}, {{ address.city }} {{ address.houseNumber }} {{ address.houseUnitNumber }}</p>
+            <p> {{ address.city }}, {{ address.street }} {{ address.houseNumber }} {{ address.houseUnitNumber }}</p>
+        {% endfor %}
+    </div>
+    <div>
+        <p>Emails: </p>
+        {% for email in contact.emails %}
+            <li> {{ email.emailType }} {{ email.emailAddress }}</li>
+        {% endfor %}
+    </div>
+    <div>
+        <p>Phones: </p>
+        {% for phone in contact.phones %}
+            <li> {{ phone.type }}, {{ phone.phoneNumber }}</li>
         {% endfor %}
     </div>
 
