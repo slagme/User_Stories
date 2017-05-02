@@ -55,8 +55,8 @@ class Contact
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
-        $this->phones=new ArrayCollection();
-        $this->emails=new ArrayCollection();
+        $this->phones = new ArrayCollection();
+        $this->emails = new ArrayCollection();
     }
 
     /**
@@ -68,8 +68,6 @@ class Contact
     {
         return $this->id;
     }
-
-
 
     /**
      * Set name
