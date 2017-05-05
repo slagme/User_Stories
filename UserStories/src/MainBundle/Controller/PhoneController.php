@@ -13,10 +13,10 @@ class PhoneController extends Controller
 {
     /**
      * @Route ("/{id}/addPhone")
-     * @Methos ("Post")
+     * @Method ("Post")
      */
 
-    public function addEmailAction (Request $request, $id)
+    public function addPhoneAction (Request $request, $id)
     {
         $em=$this->getDoctrine()->getManager();
         $contact=$em->getRepository('MainBundle:Contact')->find($id);
@@ -47,7 +47,7 @@ class PhoneController extends Controller
      * @Method("POST")
      */
 
-    public function deleteEmailAction (Request $request, $id)
+    public function deletePhoneAction (Request $request, $id)
     {
         $em=$this->getDoctrine()->getManager();
         $contact=$em->getRepository('MainBundle:Contact')->find($id);

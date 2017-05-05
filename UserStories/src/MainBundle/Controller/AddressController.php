@@ -15,7 +15,7 @@ class AddressController extends Controller
 {
 
      /**
-     * @Route("/{id}/addAddress")
+     * @Route("/{id}/addAddress/")
      * @Method ("POST")
      */
     public function addAddressAction(Request $request,  $id)
