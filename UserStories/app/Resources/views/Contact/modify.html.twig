@@ -37,6 +37,20 @@
             </form>
         {% endfor %}
     </div>
+<div>
+    <p> Phones:</p>
+    {% for phone in contact.phones %}
+        <form method="post" action="{{ path('main_phone_delete', {'id':contact.id}) }}">
+            <input type="button" name="phone_id" value="{{ phone.id }}">
+            <button type="submit"> Delete</button>
+
+            <address class="delete">
+                {{ phone.phoneNumber }}
+                {{ phone.phoneType }}
+            </address>
+        </form>
+    {% endfor %}
+</div>
 
 
 
@@ -56,10 +70,15 @@
 {{ form_end (formAddress) }}
 
 <p> Add Email:</p>
-    {{ form_start (formEmail) }}
-    {{ form_widget (formEmail) }}
-    <button type="submit"> AddEmail</button>
-    {{ form_end (formEmail) }}
+{{ form_start (formEmail) }}
+{{ form_widget (formEmail) }}
+<button type="submit"> AddEmail</button>
+{{ form_end (formEmail) }}
 
+<p> Add Phone:</p>
+{{ form_start (formPhone) }}
+{{ form_widget (formPhone) }}
+<button type="submit"> AddPhone</button>
+{{ form_end (formPhone) }}
 
 {% endblock %}

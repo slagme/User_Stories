@@ -3,19 +3,29 @@
 
 {% block title %} Contacts {% endblock %}
 {%  block body %}
+<div align="center">
+
     <form method="GET" action="{{ path('main_contact_showall') }}" ></form>
+
+
+    <a href="{{ path('main_contact_create') }}"> Create New Contact</a>
+    <br>
+
 
     {% for contact in contacts %}
         <div>
+            <p>
+                <a href="{{ path ('main_contact_show' , {'id' : contact.id})}}">{{ contact.name}} </a>
+            </p>
+
             <form action="{{ path ('main_contact_delete', {'id':contact.id })}}" method="POST">
                 <button > Delete </button> </form>
-            <form action="{{ path ('main_contact_modify', {'id':contact.id })}}" method="POST">
+            <form action="{{ path ('main_contact_modify', {'id':contact.id })}}">
                 <button > Modify</button> </form>
 
         </div>
 
-        <p>
-            <a href="{{ path ('main_contact_show' , {'id' : contact.id})}}">{{ contact.name}} </a>
-        </p>
-    {% endfor %}
+        {% endfor %}
+</div>
 {% endblock %}
+
