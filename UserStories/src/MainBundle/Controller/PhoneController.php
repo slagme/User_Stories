@@ -13,7 +13,7 @@ class PhoneController extends Controller
 {
     /**
      * @Route ("/{id}/addPhone")
-     * @Method ("Post")
+     * @Method ("POST")
      */
 
     public function addPhoneAction (Request $request, $id)
