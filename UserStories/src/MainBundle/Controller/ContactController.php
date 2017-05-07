@@ -5,9 +5,11 @@ namespace MainBundle\Controller;
 use MainBundle\Entity\Address;
 use MainBundle\Entity\Contact;
 use MainBundle\Entity\Email;
+use MainBundle\Entity\Phone;
 use MainBundle\Form\AddressType;
 use MainBundle\Form\ContactType;
 use MainBundle\Form\EmailType;
+use MainBundle\Form\PhoneType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -76,6 +78,9 @@ class ContactController extends Controller
         $email= new Email();
         $email->setContact($contact);
 
+        $phone=new Phone();
+        $phone->setContact($contact);
+
         $formContact = $this->createForm(ContactType::class, $contact);
 
         $formAddress= $this->createForm(AddressType::class, $address,
@@ -84,6 +89,10 @@ class ContactController extends Controller
 
         $formEmail = $this->createForm(EmailType::class, $email,
             ['action' => $this->generateUrl('main_email_addEmail', ['id'=>$contact->getId()]),
+                'method' => 'POST']);
+
+        $formPhone = $this->createForm(PhoneType::class, $phone,
+            ['action' => $this->generateUrl('main_email_addPhone', ['id'=>$contact->getId()]),
                 'method' => 'POST']);
 
         $formContact->handleRequest($request);
@@ -101,6 +110,7 @@ class ContactController extends Controller
             'formContact' => $formContact->createView(),
             'formAddress' => $formAddress->createView(),
             'formEmail' => $formEmail->createView(),
+            'fomrPhone' => $formPhone->createView(),
             'contact' => $contact];
     }
         /**
@@ -117,7 +127,6 @@ class ContactController extends Controller
         }
 
         $em->remove($contact);
-
         $em->flush();
 
         return $this->redirectToRoute('main_contact_showall');
