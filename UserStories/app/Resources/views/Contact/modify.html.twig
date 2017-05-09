@@ -11,16 +11,11 @@
 
 <div>
     <p> Addressess:</p>
-        {% for address in contact.adressess %}
-            <form method="post" action="{{ path('main_address_delete', {'id':contact.id}) }}">
-                <input type="button" name="address_id" value="{{ address.id }}">
-                <button type="submit"> Delete</button>
+ {#tutaj dodaj formularze#}
 
-                <address class="delete">
-                    {{ address.city }}, {{ address.street }} {{ address.houseNumber }} / {{ address.houseUnitNumber }}
-                </address>
-            </form>
-        {% endfor %}
+
+    <p> Add new address:</p>
+        {{ render(controller('MainBundle:Address:addAddress',{'id': contact.id })) }}
 </div>
 <hr>
     <div>

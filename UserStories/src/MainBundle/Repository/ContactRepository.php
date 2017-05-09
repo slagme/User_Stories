@@ -16,7 +16,7 @@ class ContactRepository extends EntityRepository
     public function loadAllAboutContact($id)
     {
         $dql = 'SELECT c,a,e,p FROM MainBundle:Contact c 
-                LEFT JOIN c.addresses a
+                LEFT JOIN c.address a
                 LEFT JOIN c.emails e
                 LEFT JOIN c.phones p
                 WHERE c.id=:id';
