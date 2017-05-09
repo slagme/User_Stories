@@ -7,29 +7,53 @@
     <h1>Name: {{ contact.name }}</h1>
     <p> Description: {{ contact.description }}</p>
     </div>
+    <div>
+        <h4> Phones:</h4>
+        {% for phone in contact.phones %}
+            {{ phone.type }} : {{ phone.phoneNumber }}
+        {% else %}
+            <p> Contact has no phone numbers</p>
+        {% endfor %}
+    <hr>
+        <h4> Emails:</h4>
+        {% for email in contact.emails %}
+            {{ email.emailType }} : {{ email.emailAddress }}
+        {% else %}
+            <p> Contact has no emails set</p>
+        {% endfor %}
+    <hr>
 
+        <h4> Address:</h4>
+        {% if contact.address %}
+            {{ contact.address.city }} {{ contact.address.street }} {{ contact.address.houseNumber }} {{ contact.address.houseUnitNumber }}
+        {% else %}
+
+            <p> Contact has no address set.</p>
+        {% endif %}
+        <hr>
+            </div>
     <form action="{{ path ('main_address_delete', {'id': contact.id}) }}" method="POST">
         <input name="_method" type="hidden" value="DELETE">
         <input type="submit" value="Delete">
     </form>
-    <div>
-        <p>Addresses: </p>
-        {% for address in contact.addresses %}
-            <p> {{ address.city }}, {{ address.street }} {{ address.houseNumber }} {{ address.houseUnitNumber }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        <p>Emails: </p>
-        {% for email in contact.emails %}
-            <li> {{ email.emailType }} {{ email.emailAddress }}</li>
-        {% endfor %}
-    </div>
-    <div>
-        <p>Phones: </p>
-        {% for phone in contact.phones %}
-            <li> {{ phone.type }}, {{ phone.phoneNumber }}</li>
-        {% endfor %}
-    </div>
+    {#<div>#}
+        {#<p>Address: </p>#}
+
+            {#<p> {{ contact.addresses.city }}, {{ contact.addresses.street }} {{ contact.addresses.houseNumber }} {{ contact.addresses.houseUnitNumber }}</p>#}
+
+    {#</div>#}
+    {#<div>#}
+        {#<p>Emails: </p>#}
+        {#{% for email in contact.emails %}#}
+            {#<li> {{ email.emailType }} {{ email.emailAddress }}</li>#}
+        {#{% endfor %}#}
+    {#</div>#}
+    {#<div>#}
+        {#<p>Phones: </p>#}
+        {#{% for phone in contact.phones %}#}
+            {#<li> {{ phone.type }}, {{ phone.phoneNumber }}</li>#}
+        {#{% endfor %}#}
+    {#</div>#}
 
 
 {% endblock body%}
