@@ -13,12 +13,14 @@ use Symfony\Component\BrowserKit\Request;
 
 class AddressController extends Controller
 {
-
+    //dodaj tutaj akcje GET dla Add Address
      /**
      * @Route("/{id}/addAddress/")
      * @Method ("POST")
      */
-    public function addAddressAction(Request $request,  $id)
+
+     //dodaj do twiga render controller
+     public function addAddressAction(Request $request,  $id)
     {
         $em=$this->getDoctrine()->getManager();
         $contact=$em->getRepository('MainBundle:Contact')->find($id);
@@ -40,7 +42,7 @@ class AddressController extends Controller
             $em->persist($address);
             $em->flush();
         }
-            return $this->redirectToRoute('main_contact_show', ['id' => $id]);
+        return $this->redirectToRoute('main_contact_show', ['id' => $id]);
 
     }
 

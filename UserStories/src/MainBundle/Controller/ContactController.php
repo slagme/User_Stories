@@ -28,72 +28,24 @@ class ContactController extends Controller
     {
         $contact = new Contact();
 
-        $form = $this->createForm(ContactType::class, $contact,
+        $formContact = $this->createForm(ContactType::class, $contact,
             ['action' => $this->generateUrl('main_contact_new')]);
 
-        return ['form' => $form->createView()];
+        return ['formContact' => $formContact->createView()];
     }
 
     /**
      * @Route("/new")
+     * @Method("POST")
      * @Template(":Contact:new.html.twig")
      */
     public function createAction(Request $request)
     {
         $contact = new Contact();
 
-        $formAddress = $this->createForm(ContactType::class, $contact);
 
-        $formAddress->handleRequest($request);
-
-        if ($formAddress->isSubmitted() && $formAddress->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($contact);
-            $em->flush();
-            
-            return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
-        }
-
-        return ['formAddress' => $formAddress->createView()];
-    }
-
-        /**
-        * @Route("/{id}/modify/")
-        * @Template("Contact:modify.html.twig")
-        */
-    public function modifyAction(Request $request, $id)
-    {
-        $contact=$this->getDoctrine()->getRepository('MainBundle:Contact')
-            ->loadAllAboutContact($id);
-
-        if(!$contact){
-            throw $this->createNotFoundException('Contact not found');
-        }
-
-
-        $address=new Address();
-        $address->setContact($contact);
-
-        $email= new Email();
-        $email->setContact($contact);
-
-        $phone=new Phone();
-        $phone->setContact($contact);
 
         $formContact = $this->createForm(ContactType::class, $contact);
-
-        $formAddress= $this->createForm(AddressType::class, $address,
-            ['action' => $this->generateUrl('main_address_addAddress', ['id'=> $contact->getId()]),
-                'method'=> 'POST']);
-
-        $formEmail = $this->createForm(EmailType::class, $email,
-            ['action' => $this->generateUrl('main_email_addEmail', ['id'=>$contact->getId()]),
-                'method' => 'POST']);
-
-        $formPhone = $this->createForm(PhoneType::class, $phone,
-            ['action' => $this->generateUrl('main_email_addPhone', ['id'=>$contact->getId()]),
-                'method' => 'POST']);
 
         $formContact->handleRequest($request);
 
@@ -102,17 +54,68 @@ class ContactController extends Controller
 
             $em->persist($contact);
             $em->flush();
-
+            
             return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
         }
 
-        return [
-            'formContact' => $formContact->createView(),
-            'formAddress' => $formAddress->createView(),
-            'formEmail' => $formEmail->createView(),
-            'fomrPhone' => $formPhone->createView(),
-            'contact' => $contact];
+        return ['formContact' => $formContact->createView()];
     }
+
+//        /**
+//        * @Route("/{id}/modify/")
+//        * @Template("Contact/modify.html.twig")
+//        */
+//    public function modifyAction(Request $request, $id)
+//    {
+//        $contact=$this->getDoctrine()->getRepository('MainBundle:Contact')
+//            ->loadAllAboutContact($id);
+//
+//        if(!$contact){
+//            throw $this->createNotFoundException('Contact not found');
+//        }
+//
+//
+//        $address=new Address();
+//        $address->setContact($contact);
+//
+//        $email= new Email();
+//        $email->setContact($contact);
+//
+//        $phone=new Phone();
+//        $phone->setContact($contact);
+//
+//        $formContact = $this->createForm(ContactType::class, $contact);
+//
+//        $formAddress= $this->createForm(AddressType::class, $address,
+//            ['action' => $this->generateUrl('main_address_addAddress', ['id'=> $contact->getId()]),
+//                'method'=> 'POST']);
+
+//        $formEmail = $this->createForm(EmailType::class, $email,
+//            ['action' => $this->generateUrl('main_email_addEmail', ['id'=>$contact->getId()]),
+//                'method' => 'POST']);
+//
+//        $formPhone = $this->createForm(PhoneType::class, $phone,
+//            ['action' => $this->generateUrl('main_email_addPhone', ['id'=>$contact->getId()]),
+//                'method' => 'POST']);
+
+//        $formContact->handleRequest($request);
+//
+//        if ($formContact->isSubmitted() && $formContact->isValid()) {
+//            $em = $this->getDoctrine()->getManager();
+//
+//            $em->persist($contact);
+//            $em->flush();
+//
+//            return $this->redirectToRoute('main_contact_show', ['id' => $contact->getId()]);
+//        }
+//
+//        return [
+//            'formContact' => $formContact->createView(),
+//            'formAddress' => $formAddress->createView(),
+////            'formEmail' => $formEmail->createView(),
+////            'fomrPhone' => $formPhone->createView(),
+//            'contact' => $contact];
+//    }
         /**
         * @Route("/{id}/delete")
         * @Method("POST")
