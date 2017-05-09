@@ -1,0 +1,84 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} {{ contact.name }}{% endblock %}
+
+{% block body %}
+<div>
+    <h1>{{ contact.name }}</h1>
+    <p>contact.description</p>
+</div>
+<hr>
+
+<div>
+    <p> Addressess:</p>
+        {% for address in contact.addressess %}
+            <form method="post" action="{{ path('main_address_delete', {'id':contact.id}) }}">
+                <input type="button" name="address_id" value="{{ address.id }}">
+                <button type="submit"> Delete</button>
+
+                <address class="delete">
+                    {{ address.city }}, {{ address.street }} {{ address.houseNumber }} / {{ address.houseUnitNumber }}
+                </address>
+            </form>
+        {% endfor %}
+</div>
+<hr>
+    <div>
+        <p> Emails:</p>
+        {% for email in contact.emails %}
+            <form method="post" action="{{ path('main_email_delete', {'id':contact.id}) }}">
+                <input type="button" name="email_id" value="{{ email.id }}">
+                <button type="submit"> Delete</button>
+
+                <address class="delete">
+                    {{ email.emailAddress }}
+                    {{ email.emailType }}
+                </address>
+            </form>
+        {% endfor %}
+    </div>
+<div>
+    <p> Phones:</p>
+    {% for phone in contact.phones %}
+        <form method="post" action="{{ path('main_phone_delete', {'id':contact.id}) }}">
+            <input type="button" name="phone_id" value="{{ phone.id }}">
+            <button type="submit"> Delete</button>
+
+            <address class="delete">
+                {{ phone.phoneNumber }}
+                {{ phone.phoneType }}
+            </address>
+        </form>
+    {% endfor %}
+</div>
+
+
+
+
+</div>
+<p> Modify Contact:</p>
+{{ form_start (form) }}
+{{ form_widget (form) }}
+<button type="submit"> Modify Contact</button>
+{{ form_end (form) }}
+
+
+<p> Add Address:</p>
+{{ form_start (formAddress) }}
+{{ form_widget (formAddress) }}
+<button type="submit"> AddAddress</button>
+{{ form_end (formAddress) }}
+
+<p> Add Email:</p>
+{{ form_start (formEmail) }}
+{{ form_widget (formEmail) }}
+<button type="submit"> AddEmail</button>
+{{ form_end (formEmail) }}
+
+<p> Add Phone:</p>
+{{ form_start (formPhone) }}
+{{ form_widget (formPhone) }}
+<button type="submit"> AddPhone</button>
+{{ form_end (formPhone) }}
+
+{% endblock %}

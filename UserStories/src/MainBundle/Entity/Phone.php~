@@ -115,6 +115,29 @@ class Phone
      */
     public function getPhone()
     {
-        return $phone->phone;
+        return $this->phone;
+    }
+
+    /**
+     * Set contact
+     *
+     * @param \MainBundle\Entity\Contact $contact
+     * @return Phone
+     */
+    public function setContact(\MainBundle\Entity\Contact $contact = null)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return \MainBundle\Entity\Contact 
+     */
+    public function getContact()
+    {
+        return $this->contact;
     }
 }

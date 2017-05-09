@@ -5,6 +5,7 @@ namespace MainBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Contact
  *
@@ -35,21 +36,36 @@ class Contact
      * @ORM\Column(name="description", type="string", length=1000)
      */
     private $description;
+    /**
+     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Address", inversedBy="contacts")
+     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
+     */
+    private $address;
 
     /**
-     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Address", mappedBy="contact")
-     */
-    private $addresses;
-    /**
-     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Phone", mappedBy="phone")
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Phone", mappedBy="contact")
      */
     private $phones;
+    /**
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Email", mappedBy="contact")
+     */
+    private $emails;
 
 
     public function __construct()
     {
-        $this->addresses = new ArrayCollection();
-        $this->phones=new ArrayCollection();
+        $this->phones = new ArrayCollection();
+        $this->emails = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -98,56 +114,8 @@ class Contact
         return $this->description;
     }
 
-    /**
-     * Add addresses
-     *
-     * @param Address $address
-     * @return Contact
-     * @internal param Address $addresses
-     */
-    public function addAddress(Address $address)
-    {
-        $this->addresses[] = $address;
-
-        return $this;
-    }
-    /**
-     * Remove addresses
-     *
-     * @param Address $addresses
-     */
-    public function removeAddress(Address $address)
-    {
-        $this->addresses->removeElement($address);
-    }
-    /**
-     * Get addresses
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAddresses()
-    {
-        return $this->addresses;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
 
-    /**
-     * Add addresses
-     *
-     * @param phone $phone
-     * @return Contact
-     * @internal param Phone $phones
-     */
     public function addPhone(Address $phone)
     {
         $this->phones[] = $phone;
@@ -155,9 +123,9 @@ class Contact
         return $this;
     }
     /**
-     * Remove phnes
+     * Remove phones
      *
-     * @param Address $phones
+     * @param Phone $phones
      */
     public function removePhone(Address $phone)
     {
@@ -171,5 +139,37 @@ class Contact
     public function getPhones()
     {
         return $this->phones;
+    }
+
+    /**
+     * Add emails
+     *
+     * @param email $email
+     * @return Contact
+     * @internal param email $emails
+     */
+    public function addEmail(\MainBundle\Entity\Email $email)
+    {
+        $this->emails[] = $email;
+
+        return $this;
+    }
+    /**
+     * Remove email
+     *
+     * @param \MainBundle\Entity\Email $email
+     */
+    public function removeEmail(\MainBundle\Entity\Email $email)
+    {
+        $this->emails->removeElement($email);
+    }
+    /**
+     * Get email
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmails()
+    {
+        return $this->emails;
     }
 }

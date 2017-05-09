@@ -3,6 +3,7 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Address
@@ -50,11 +51,10 @@ class Address
     private $houseUnitNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Contact", inversedBy="addresses")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Contact", mappedBy="address")
      */
 
-    private $contact;
+    private $contacts;
 
     /**
      * Get id
@@ -157,27 +157,4 @@ class Address
     {
         return $this->houseUnitNumber;
     }
-
-    /**
-     * Set contact
-     *
-     * @param \MainBundle\Entity\Contact $contact
-     * @return Address
-     */
-    public function setContact(\MainBundle\Entity\Contact $contact = null)
-    {
-        $this->contact = $contact;
-
-        return $this;
-    }
-    /**
-     * Get contact
-     *
-     * @return \MainBundle\Entity\Contact
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
 }

@@ -4,7 +4,7 @@ namespace MainBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bundle\SwiftmailerBundle\EventListener\EmailSenderListener;
+
 
 /**
  * Contact
@@ -36,11 +36,12 @@ class Contact
      * @ORM\Column(name="description", type="string", length=1000)
      */
     private $description;
-
     /**
-     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Address", mappedBy="contact")
+     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Address", inversedBy="contacts")
+     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
      */
-    private $addresses;
+    private $address;
+
     /**
      * @ORM\OneToMany(targetEntity="MainBundle\Entity\Phone", mappedBy="contact")
      */
@@ -51,10 +52,8 @@ class Contact
     private $emails;
 
 
-
     public function __construct()
     {
-        $this->addresses = new ArrayCollection();
         $this->phones = new ArrayCollection();
         $this->emails = new ArrayCollection();
     }
@@ -115,45 +114,8 @@ class Contact
         return $this->description;
     }
 
-    /**
-     * Add addresses
-     *
-     * @param Address $address
-     * @return Contact
-     * @internal param Address $addresses
-     */
-    public function addAddress(Address $address)
-    {
-        $this->addresses[] = $address;
 
-        return $this;
-    }
-    /**
-     * Remove addresses
-     *
-     * @param Address $addresses
-     */
-    public function removeAddress(Address $address)
-    {
-        $this->addresses->removeElement($address);
-    }
-    /**
-     * Get addresses
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAddresses()
-    {
-        return $this->addresses;
-    }
 
-    /**
-     * Add addresses
-     *
-     * @param phone $phone
-     * @return Contact
-     * @internal param Phone $phones
-     */
     public function addPhone(Address $phone)
     {
         $this->phones[] = $phone;
@@ -209,5 +171,28 @@ class Contact
     public function getEmails()
     {
         return $this->emails;
+    }
+
+    /**
+     * Set address
+     *
+     * @param \MainBundle\Entity\Address $address
+     * @return Contact
+     */
+    public function setAddress(\MainBundle\Entity\Address $address = null)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return \MainBundle\Entity\Address 
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

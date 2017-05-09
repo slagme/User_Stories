@@ -3,6 +3,7 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Address
@@ -50,11 +51,10 @@ class Address
     private $houseUnitNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Contact", inversedBy="addresses")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\Contact", mappedBy="address")
      */
 
-    private $contact;
+    private $contacts;
 
     /**
      * Get id
@@ -157,27 +157,44 @@ class Address
     {
         return $this->houseUnitNumber;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->contacts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
-     * Set contact
+     * Add contacts
      *
-     * @param \MainBundle\Entity\Contact $contact
+     * @param \MainBundle\Entity\Contact $contacts
      * @return Address
      */
-    public function setContact(\MainBundle\Entity\Contact $contact = null)
+    public function addContact(\MainBundle\Entity\Contact $contacts)
     {
-        $this->contact = $contact;
+        $this->contacts[] = $contacts;
 
         return $this;
     }
+
     /**
-     * Get contact
+     * Remove contacts
      *
-     * @return \MainBundle\Entity\Contact
+     * @param \MainBundle\Entity\Contact $contacts
      */
-    public function getContact()
+    public function removeContact(\MainBundle\Entity\Contact $contacts)
     {
-        return $this->contact;
+        $this->contacts->removeElement($contacts);
     }
 
+    /**
+     * Get contacts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
 }
